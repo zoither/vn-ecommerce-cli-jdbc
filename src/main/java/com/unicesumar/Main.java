@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,7 +18,7 @@ public class Main {
         UserRepository listaDeUsuarios = null;
 
         Connection conn = null;
-        
+
         // Parâmetros de conexão
         String url = "jdbc:sqlite:database.sqlite";
 
@@ -42,11 +43,11 @@ public class Main {
         do {
             System.out.println("\n---MENU---");
             System.out.println("1 - Cadastrar Produto");
-            System.out.println("2 - Listas Produtos");
+            System.out.println("2 - Listar Produtos");
             System.out.println("3 - Cadastrar Usuário");
             System.out.println("4 - Listar Usuários");
             System.out.println("5 - Sair");
-            System.out.println("Escolha uma opção: ");
+            System.out.print("Escolha uma opção: ");
             option = scanner.nextInt();
 
             switch (option) {
@@ -62,7 +63,17 @@ public class Main {
                     break;
                 case 3:
                     System.out.println("Cadastrar Usuário");
-                    listaDeUsuarios.save(new User("Rafael Labegalini", "rafael@example", "1234"));
+                    scanner.nextLine(); // Limpar quebra de linha
+                    System.out.print("Nome: ");
+                    String name = scanner.nextLine();
+
+                    System.out.print("Email: ");
+                    String email = scanner.nextLine();
+
+                    System.out.print("Senha: ");
+                    String password = scanner.nextLine();
+
+                    listaDeUsuarios.save(new User(UUID.randomUUID(), name, email, password));
                     break;
                 case 4:
                     System.out.println("Listar Usuários");
@@ -73,8 +84,7 @@ public class Main {
                     System.out.println("Saindo...");
                     break;
                 default:
-                    System.out.println("Opção inválida. Tente novamente");
-                    ;
+                    System.out.println("Opção inválida. Tente novamente.");
             }
 
         } while (option != 5);
